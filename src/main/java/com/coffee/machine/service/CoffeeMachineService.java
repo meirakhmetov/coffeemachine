@@ -30,6 +30,25 @@ public class CoffeeMachineService {
         this.ingredientRepository = ingredientRepository;
     }
 
+
+    @Transactional
+    public String deleteDrink(Long id) {
+        if (!drinkRepository.existsById(id)) {
+            return "Напиток с ID " + id + " не найден!";
+        }
+        drinkRepository.deleteById(id);
+        return "Напиток с ID " + id + " удалён!";
+    }
+
+    @Transactional
+    public String deleteIngredient(Long id) {
+        if (!ingredientRepository.existsById(id)) {
+            return "Ингредиент с ID " + id + " не найден!";
+        }
+        ingredientRepository.deleteById(id);
+        return "Ингредиент с ID " + id + " удалён!";
+    }
+
     public List<CoffeeMachineDTO> getAllMachines() {
         return repository.findAll().stream()
                 .map(machine -> new CoffeeMachineDTO(machine.getModel(), machine.getIsWorking()))

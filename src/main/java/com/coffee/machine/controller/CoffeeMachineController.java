@@ -75,4 +75,16 @@ public class CoffeeMachineController {
     public ResponseEntity<String> getMostPopularDrink() {
         return ResponseEntity.ok(service.getMostPopularDrink());
     }
+
+    @Operation(summary = "Удалить напиток по ID")
+    @DeleteMapping("/drink/{id}")
+    public ResponseEntity<String> deleteDrink(@PathVariable Long id) {
+        return ResponseEntity.ok(service.deleteDrink(id));
+    }
+
+    @Operation(summary = "Удалить ингредиент по ID")
+    @DeleteMapping("/ingredient/{id}")
+    public ResponseEntity<String> deleteIngredient(@PathVariable Long id) {
+        return ResponseEntity.ok(service.deleteIngredient(id));
+    }
 }
