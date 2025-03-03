@@ -9,6 +9,10 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Сервис для проверки рабочего времени кофемашины.
+ * Учитывает рабочие часы, выходные и праздничные дни.
+ */
 @Service
 public class WorkingHoursValidator {
 
@@ -21,6 +25,12 @@ public class WorkingHoursValidator {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Проверяет, находится ли текущее время в рабочем интервале.
+     * Рабочее время: 8:00 - 17:00, без выходных и праздников.
+     *
+     * @return {@code true}, если кофемашина может работать, иначе {@code false}
+     */
     public boolean isWorkingHours() {
         LocalTime now = LocalTime.now();
         LocalDate today = LocalDate.now();
@@ -39,6 +49,14 @@ public class WorkingHoursValidator {
         return !isPublicHoliday(today);
     }
 
+    /**
+     * Проверяет, является ли указанная дата праздником.
+     * Использует API {@code date.nager.at} для получения списка праздничных дней.
+     * Результаты кешируются для оптимизации запросов.
+     *
+     * @param date дата для проверки
+     * @return {@code true}, если день является праздничным, иначе {@code false}
+     */
     @Cacheable("holidays")
     public boolean isPublicHoliday(LocalDate date) {
         int year = date.getYear();
@@ -56,5 +74,8 @@ public class WorkingHoursValidator {
         }
     }
 
+    /**
+     * Вспомогательный класс для обработки данных API праздников.
+     */
     private record Holiday(String date) {}
 }
